@@ -1,0 +1,26 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper: authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Receipt images live under receipts/{ownerId}/{receiptId}/...
+    match /receipts/{ownerId}/{allPaths=**} {
+      allow read: if isAuthenticated() && request.auth.uid == ownerId;
+      allow write: if isAuthenticated() && request.auth.uid == ownerId;
+    }
+
+    // Vehicle images under vehicles/{ownerId}/...
+    match /vehicles/{ownerId}/{allPaths=**} {
+      allow read: if isAuthenticated() && request.auth.uid == ownerId;
+      allow write: if isAuthenticated() && request.auth.uid == ownerId;
+    }
+
+    // Deny everything else
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

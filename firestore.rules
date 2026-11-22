@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Check if user owns the document
+    function isOwner(userId, docOwner) {
+      return request.auth != null && request.auth.uid == docOwner;
+    }
+
+    // Helper: Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // USERS collection
+    match /users/{userId} {
+      // Read: Own doc only
+      allow read: if isOwner(userId, userId);
+
+      // Write: Own doc only (including account deletion via delete())
+      allow write: if isOwner(userId, userId);
+    }
+
+    // VEHICLES collection (belongs to a user)
+    match /vehicles/{vehicleId} {
+      // Read: Owner can read own vehicles
+      allow read: if isOwner(request.auth.uid, resource.data.ownerId);
+
+      // Write: Owner can write/delete own vehicles
+      allow create: if isOwner(request.auth.uid, request.resource.data.ownerId);
+      allow update: if isOwner(request.auth.uid, resource.data.ownerId);
+      allow delete: if isOwner(request.auth.uid, resource.data.ownerId);
+    }
+
+    // SERVICE ENTRIES collection (belongs to a vehicle, which belongs to a user)
+    match /service_entries/{serviceEntryId} {
+      // Read: Owner can read all service entries for their vehicles
+      allow read: if isOwner(request.auth.uid, resource.data.vehicleOwnerId);
+
+      // Write: Owner can add/update/delete service entries
+      allow create: if isOwner(request.auth.uid, request.resource.data.vehicleOwnerId);
+      allow update: if isOwner(request.auth.uid, resource.data.vehicleOwnerId);
+      allow delete: if isOwner(request.auth.uid, resource.data.vehicleOwnerId);
+    }
+
+    // REMINDERS collection (belongs to a user)
+    match /reminders/{reminderId} {
+      // Read: Owner can read own reminders
+      allow read: if isOwner(request.auth.uid, resource.data.ownerId);
+
+      // Write: Owner can add/update/delete reminders
+      allow create: if isOwner(request.auth.uid, request.resource.data.ownerId);
+      allow update: if isOwner(request.auth.uid, resource.data.ownerId);
+      allow delete: if isOwner(request.auth.uid, resource.data.ownerId);
+    }
+
+    // RECEIPTS collection + STORAGE (belongs to a user)
+    match /receipts/{receiptId} {
+      // Read: Owner can read their receipts
+      allow read: if isOwner(request.auth.uid, resource.data.ownerId);
+
+      // Write: Owner can add/delete receipts (not update as that would change the ID)
+      allow create: if isOwner(request.auth.uid, request.resource.data.ownerId);
+      allow delete: if isOwner(request.auth.uid, resource.data.ownerId);
+    }
+
+    // Catch-all: Unauthenticated access denied
+    allow read, write: if false;
+  }
+}
