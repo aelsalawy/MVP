@@ -4,6 +4,8 @@ import { Stack } from 'expo-router';
 export default function VehicleLayout() {
   return (
     <Stack>
+      <Stack.Screen name="vin-scan" options={{ title: 'Add Vehicle' }} />
+      <Stack.Screen name="decode-result" options={{ title: 'Vehicle Details' }} />
       <Stack.Screen name="manual/index" options={{ title: 'Add Vehicle' }} />
       <Stack.Screen name="manual/details" options={{ title: 'Vehicle Details' }} />
       <Stack.Screen name="odometer" options={{ title: 'Odometer' }} />

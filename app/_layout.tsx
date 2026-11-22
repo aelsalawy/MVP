@@ -6,6 +6,7 @@ export default function RootLayout() {
     <>
       <Stack>
         <Stack.Screen name="index" options={{ title: 'Car Tracker' }} />
+        <Stack.Screen name="(vehicle)" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
     </>
