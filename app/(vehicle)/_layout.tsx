@@ -1,0 +1,12 @@
+import { Stack } from 'expo-router';
+
+/** Manual vehicle entry flow (T2.2) — route group (vehicle). */
+export default function VehicleLayout() {
+  return (
+    <Stack>
+      <Stack.Screen name="manual/index" options={{ title: 'Add Vehicle' }} />
+      <Stack.Screen name="manual/details" options={{ title: 'Vehicle Details' }} />
+      <Stack.Screen name="odometer" options={{ title: 'Odometer' }} />
+    </Stack>
+  );
+}
