@@ -5,7 +5,7 @@ describe('D3.1 entitlements map', () => {
   test('reserved advanced tier is present in map', () => {
     expect(TIERS).toContain('advanced');
     for (const key of Object.keys(ENTITLEMENTS)) {
-      expect((ENTITLEMENTS as any)[key]).toHaveProperty('advanced');
+      expect(Object.prototype.hasOwnProperty.call((ENTITLEMENTS as Record<string, Record<string, unknown>>)[key], 'advanced')).toBe(true);
     }
   });
   test('free tier: 1 vehicle, manual+reminders yes, ocr no', () => {

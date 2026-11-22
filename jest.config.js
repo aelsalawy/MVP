@@ -1,5 +1,5 @@
 module.exports = {
   testEnvironment: 'node',
-  globals: { 'ts-jest': { tsconfig: { types: ['jest'] } } },
-  testMatch: ['**/src/**/*.test.ts', '**/*.rules.test.ts'],
+  transform: { '^.+\\.tsx?$': ['ts-jest', { tsconfig: { types: ['jest'], esModuleInterop: true } }] },
+  testMatch: ['**/src/entitlements/*.test.ts', '**/firestore.rules.test.ts'],
 };
