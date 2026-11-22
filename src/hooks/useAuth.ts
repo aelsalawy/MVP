@@ -47,4 +47,7 @@ export function useAuth() {
   }, []);
 
   return { user, loading, error, ensureUserDoc };
-}
+};
+
+export default useAuth;
+
