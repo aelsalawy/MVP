@@ -1,31 +1,36 @@
 import { View, StyleSheet, Text } from 'react-native';
-import useAuthStore from '../../src/hooks/useAuth';
+import { useRouter } from 'expo-router';
+import { auth } from '../../lib/firebase';
+import { useAuth } from '../../src/hooks/useAuth';
 import { Screen } from '../../src/design/Screen';
+import { Card } from '../../src/design/Card';
 import { Button } from '../../src/design/Button';
 
+/** Placeholder dashboard shell (full dashboard is T6.1) — signed-in users only. */
 export default function DashboardScreen() {
-  const { user } = useAuthStore();
+  const router = useRouter();
+  const { user } = useAuth();
 
   const handleLogout = async () => {
     await auth.signOut();
-    // User will be redirected by index.tsx redirect logic
+    router.replace('/');
   };
 
   return (
     <Screen scrollable={false}>
       <View style={styles.container}>
         <Text style={styles.title}>Dashboard</Text>
-        <Text style={styles.email}>{user?.email}</Text>
+        <Text style={styles.email}>{user?.email ?? ''}</Text>
 
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Welcome to Car Tracker</Text>
-          <Text style={styles.cardText}>
-            This is a placeholder dashboard. The full dashboard implementation will be in a future task.
-          </Text>
-        </View>
+        <Card>
+          <View style={styles.cardInner}>
+            <Text style={styles.cardTitle}>Garage</Text>
+            <Text style={styles.cardBody}>Your vehicles will appear here.</Text>
+          </View>
+        </Card>
 
-        <Button onPress={handleLogout} variant="secondary">
-          Sign Out
+        <Button variant="primary" onPress={handleLogout}>
+          Sign out
         </Button>
       </View>
     </Screen>
@@ -35,37 +40,31 @@ export default function DashboardScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 24,
+    padding: 24,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
     color: '#f8fafc',
+    marginBottom: 4,
   },
   email: {
-    fontSize: 16,
-    color: '#94a3b8',
-  },
-  card: {
-    backgroundColor: '#1e293b',
-    borderRadius: 12,
-    padding: 24,
-    width: '80%',
-    maxWidth: 400,
-    borderWidth: 1,
-    borderColor: '#334155',
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#f8fafc',
-    marginBottom: 12,
-  },
-  cardText: {
     fontSize: 14,
     color: '#94a3b8',
-    lineHeight: 20,
+    marginBottom: 24,
+  },
+  cardInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#f8fafc',
+  },
+  cardBody: {
+    fontSize: 13,
+    color: '#94a3b8',
   },
 });
