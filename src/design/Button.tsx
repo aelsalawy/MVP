@@ -8,7 +8,7 @@ import {
   TextStyle,
   Pressable,
 } from 'react-native';
-import { colors, radius, spacing, shadows } from './theme';
+import { colors, radius, spacing, shadows, typography } from './theme';
 
 export type ButtonVariant = 'primary' | 'secondary';
 export type ButtonSize = 'sm' | 'md' | 'lg';
@@ -57,21 +57,9 @@ const variantStyles = {
 };
 
 const sizeStyles = {
-  sm: {
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
-    fontSize: typography.fontSize.sm,
-  },
-  md: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    fontSize: typography.fontSize.base,
-  },
-  lg: {
-    paddingVertical: spacing.lg,
-    paddingHorizontal: spacing.xl,
-    fontSize: typography.fontSize.lg,
-  },
+  sm: { paddingVertical: spacing.sm, paddingHorizontal: spacing.md, fontSize: typography.fontSize.sm },
+  md: { paddingVertical: spacing.md, paddingHorizontal: spacing.lg, fontSize: typography.fontSize.base },
+  lg: { paddingVertical: spacing.lg, paddingHorizontal: spacing.xl, fontSize: typography.fontSize.lg },
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -87,9 +75,9 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const isDisabled = disabled || state === 'disabled' || loading;
 
-  const handlePress = (e: any) => {
+  const handlePress = () => {
     if (!isDisabled && onPress) {
-      onPress(e);
+      onPress();
     }
   };
 
@@ -133,14 +121,6 @@ export const Button: React.FC<ButtonProps> = ({
       )}
     </Pressable>
   );
-};
-
-const typography = {
-  fontSize: {
-    sm: 12,
-    base: 14,
-    lg: 16,
-  },
 };
 
 const styles = StyleSheet.create({

@@ -32,7 +32,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "ci": "npm run typecheck && npm run lint",
-    "test:rules": "firebase emulators:exec --only firestore \"npx jest firestore.rules.test.ts\""
+    "test:rules": "firebase emulators:exec --only firestore \"npx jest firestore.rules.test.ts\"",
+    "test": "jest",
+    "test:entitlements": "jest src/entitlements"
   },
   "private": true
 }

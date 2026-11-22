@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, Pressable } from 'react-native';
-import { colors, spacing, radius, shadows } from './theme';
+import { colors, spacing, radius, shadows, typography } from './theme';
 
 export interface ListRowProps {
   left?: React.ReactNode;
@@ -82,11 +82,11 @@ const styles = StyleSheet.create({
     marginLeft: spacing.md,
   },
   title: {
-    ...typography.fontSize.base,
+    fontSize: typography.fontSize.base,
     fontWeight: typography.fontWeight.medium,
   },
   subtitle: {
-    ...typography.fontSize.sm,
+    fontSize: typography.fontSize.sm,
     marginTop: 2,
   },
   divider: {

@@ -1,5 +1,5 @@
 module.exports = {
-  preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: ['**/firestore.rules.test.ts'],
+  globals: { 'ts-jest': { tsconfig: { types: ['jest'] } } },
+  testMatch: ['**/src/**/*.test.ts', '**/*.rules.test.ts'],
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { colors, radius, typography } from './theme';
+import { colors, radius, typography, spacing } from './theme';
 
 export type BadgeVariant = 'default' | 'success' | 'warning' | 'error' | 'info';
 
@@ -46,17 +46,17 @@ export const Badge: React.FC<BadgeProps> = ({
 
   const sizeStyles: Record<string, { fontSize: number; paddingX: number; paddingY: number }> = {
     sm: {
-      fontSize: typography.fontSize.xs,
+      fontSize: typography.fontSize.xs as number,
       paddingX: spacing.sm,
       paddingY: spacing.xs,
     },
     md: {
-      fontSize: typography.fontSize.sm,
+      fontSize: typography.fontSize.sm as number,
       paddingX: spacing.md,
       paddingY: spacing.sm,
     },
     lg: {
-      fontSize: typography.fontSize.base,
+      fontSize: typography.fontSize.base as number,
       paddingX: spacing.lg,
       paddingY: spacing.md,
     },

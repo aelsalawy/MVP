@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
+import { SafeAreaView, StyleSheet, View, ViewStyle } from 'react-native';
 import { colors, spacing } from './theme';
 
 export interface ScreenProps {
@@ -26,8 +26,7 @@ export const Screen: React.FC<ScreenProps> = ({
 
   return (
     <SafeAreaView
-      style={safeAreaTop ? styles.safeAreaTop : undefined}
-      edges={['top']}
+      style={[safeAreaTop ? styles.safeAreaTop : undefined, screenStyle]}
     >
       <View
         style={[

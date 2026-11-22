@@ -19,7 +19,7 @@ export interface InputProps extends TextInputProps {
   inputStyle?: TextStyle;
 }
 
-export const Input = forwardRef<TextInput, InputProps>(
+export const Input = forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
   (
     {
       label,
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   label: {
-    ...typography.fontSize.base,
-    fontWeight: typography.fontWeight.medium,
+    fontSize: typography.fontSize.base,
+    fontWeight: typography.fontWeight.medium as '400',
     color: colors.text.primary,
     marginBottom: spacing.xs,
   },
@@ -105,11 +105,12 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   input: {
-    ...typography.fontSize.base,
+    fontFamily: typography.fontFamily.base,
+    fontSize: typography.fontSize.base,
     paddingVertical: 0,
   },
   helperText: {
-    ...typography.fontSize.sm,
+    fontSize: typography.fontSize.sm,
     marginTop: spacing.xs,
   },
   error: {
