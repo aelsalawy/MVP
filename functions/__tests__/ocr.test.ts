@@ -41,7 +41,7 @@ describe('parseReceipt (T3.2, FR-2.2)', () => {
             }),
           },
         },
-      } as unknown as Awaited<ReturnType<typeof parseReceipt>>;
+      } as unknown as any;
 
       // @ts-ignore
       const originalCreate = (globalThis as unknown as { OpenAI: any }).OpenAI;
@@ -97,7 +97,7 @@ describe('parseReceipt (T3.2, FR-2.2)', () => {
             }),
           },
         },
-      } as unknown as Awaited<ReturnType<typeof parseReceipt>>;
+      } as unknown as any;
 
       // @ts-ignore
       const originalCreate = (globalThis as unknown as { OpenAI: any }).OpenAI;
@@ -142,7 +142,7 @@ describe('parseReceipt (T3.2, FR-2.2)', () => {
             }),
           },
         },
-      } as unknown as Awaited<ReturnType<typeof parseReceipt>>;
+      } as unknown as any;
 
       // @ts-ignore
       const originalCreate = (globalThis as unknown as { OpenAI: any }).OpenAI;
@@ -189,7 +189,7 @@ describe('parseReceipt (T3.2, FR-2.2)', () => {
             }),
           },
         },
-      } as unknown as Awaited<ReturnType<typeof parseReceipt>>;
+      } as unknown as any;
 
       // @ts-ignore
       const originalCreate = (globalThis as unknown as { OpenAI: any }).OpenAI;
@@ -223,7 +223,7 @@ describe('parseReceipt (T3.2, FR-2.2)', () => {
             }),
           },
         },
-      } as unknown as Awaited<ReturnType<typeof parseReceipt>>;
+      } as unknown as any;
 
       // @ts-ignore
       const originalCreate = (globalThis as unknown as { OpenAI: any }).OpenAI;
@@ -262,7 +262,7 @@ describe('parseReceipt (T3.2, FR-2.2)', () => {
             }),
           },
         },
-      } as unknown as Awaited<ReturnType<typeof parseReceipt>>;
+      } as unknown as any;
 
       // @ts-ignore
       const originalCreate = (globalThis as unknown as { OpenAI: any }).OpenAI;
@@ -301,7 +301,7 @@ describe('parseReceipt (T3.2, FR-2.2)', () => {
             }),
           },
         },
-      } as unknown as Awaited<ReturnType<typeof parseReceipt>>;
+      } as unknown as any;
 
       // @ts-ignore
       const originalCreate = (globalThis as unknown as { OpenAI: any }).OpenAI;
@@ -345,7 +345,7 @@ describe('parseReceipt (T3.2, FR-2.2)', () => {
             }),
           },
         },
-      } as unknown as Awaited<ReturnType<typeof parseReceipt>>;
+      } as unknown as any;
 
       // @ts-ignore
       const originalCreate = (globalThis as unknown as { OpenAI: any }).OpenAI;

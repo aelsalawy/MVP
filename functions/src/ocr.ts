@@ -65,14 +65,19 @@ export async function parseReceipt(
   timeoutMs: number = OCR_TIMEOUT_MS
 ): Promise<ReceiptParseResult | null> {
   if (!apiKey) {
-    throw new Error('OPENAI_API_KEY not configured in environment variables');
+    // FR-2.2 contract: unconfigured provider is a null result, not a crash —
+    // the caller (Callable wrapper) surfaces a friendly "not configured" state.
+    return null;
   }
 
   if (!imageUrl) {
-    throw new Error('Image URL is required');
+    return null;
   }
 
-  const client = new OpenAI({
+  // Test seam: tests inject a mock constructor via globalThis.OpenAI
+  // (transpiled CJS binds the static import, so globalThis check is the reliable interception point).
+  const OpenAICtor = (globalThis as unknown as { OpenAI?: typeof OpenAI }).OpenAI ?? OpenAI;
+  const client = new OpenAICtor({
     apiKey,
     timeout: timeoutMs,
   });

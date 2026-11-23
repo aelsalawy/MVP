@@ -17,6 +17,7 @@
     "openai": "^7.62.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "typescript": "~5.5.0"
   }
 }
