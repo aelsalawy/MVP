@@ -19,3 +19,6 @@ export const helloWorld = onRequest((_req, res) => {
 
 // T4.1 (FR-3.1): manufacturer interval ingestion + seed import callable.
 export { importIntervals, importIntervalsFn } from './intervals';
+
+// T7.2 (FR-2.2, D3.1): OCR parse callable with server-side metering gate.
+export { wrapOcrParse } from './ocrParse';
