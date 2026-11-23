@@ -4,6 +4,9 @@
     "slug": "car-tracker-app",
     "scheme": "cartracker",
     "version": "1.0.0",
+    "extra": {
+      "sentryDsn": "https://f9b6b71cccaaa7b97ef78edfb9c5c549@o4512483542695936.ingest.de.sentry.io/4512483626647632"
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

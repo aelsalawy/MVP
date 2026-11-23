@@ -1,7 +1,8 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Sentry, sentryEnabled } from '../lib/sentry';
 
-export default function RootLayout() {
+function RootLayoutInner() {
   return (
     <>
       <Stack>
@@ -12,3 +13,8 @@ export default function RootLayout() {
     </>
   );
 }
+
+// Wrap with Sentry's error boundary + routing instrumentation when enabled.
+export default sentryEnabled
+  ? Sentry.wrap(RootLayoutInner)
+  : RootLayoutInner;
