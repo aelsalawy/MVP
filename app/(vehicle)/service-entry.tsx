@@ -28,6 +28,8 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { useAuth } from '../../src/hooks/useAuth';
+import { useSyncState } from '../../src/hooks/useSyncState';
+import { SyncBanner } from '../../src/components/SyncBanner';
 import { hasEntitlement } from '../../src/entitlements';
 import { PlanTier, VehicleDoc } from '../../src/types';
 import {
@@ -56,6 +58,10 @@ const EMPTY_ITEM: LineItemInput = { desc: '', priceText: '' };
 export default function ServiceEntryScreen() {
   const { vehicleId: vehicleIdParam } = useLocalSearchParams<{ vehicleId?: string }>();
   const { user } = useAuth();
+  // T3.4 / NFR-2: sync state drives the offline banner. The addDoc below
+  // resolves from Firestore's persistent local cache while offline and
+  // replays to the server on reconnect — no explicit queue needed here.
+  const sync = useSyncState();
 
   const [vehicleId, setVehicleId] = useState<string | null>(
     typeof vehicleIdParam === 'string' && vehicleIdParam ? vehicleIdParam : null
@@ -152,6 +158,9 @@ export default function ServiceEntryScreen() {
       );
       if (!entry) throw new Error('Invalid entry');
       Keyboard.dismiss();
+      // NFR-2 / T3.4: while offline, addDoc resolves against the persistent
+      // local cache and Firestore queues + replays the write automatically
+      // when connectivity returns — manual entries queue natively.
       await addDoc(collection(db, 'service_entries'), entry);
       router.back();
     } catch (e) {
@@ -169,6 +178,7 @@ export default function ServiceEntryScreen() {
 
   return (
     <Screen padding="md" scrollable safeAreaBottom={false}>
+      <SyncBanner {...sync} />
       <View style={styles.header}>
         <Text style={styles.title}>Add service</Text>
         <Text style={styles.subtitle}>
