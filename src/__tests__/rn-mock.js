@@ -29,6 +29,7 @@ module.exports = {
   Text: host('Text'),
   TextInput: host('TextInput'),
   TouchableOpacity: host('TouchableOpacity'),
+  SafeAreaView: host('SafeAreaView'),
   Pressable,
   ActivityIndicator: host('ActivityIndicator'),
   ScrollView: host('ScrollView'),
