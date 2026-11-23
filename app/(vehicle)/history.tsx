@@ -16,6 +16,9 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { useAuth } from '../../src/hooks/useAuth';
+import { useSyncState } from '../../src/hooks/useSyncState';
+import { SyncBanner } from '../../src/components/SyncBanner';
+import { useEntitlements } from '../../src/hooks/useEntitlements';
 import { Screen, Card, Button, Badge, ListRow, colors, spacing, typography } from '../../src/design';
 import {
   listHistoryEntries,
@@ -24,6 +27,7 @@ import {
   HistoryEntry,
 } from '../../src/services/history';
 import { SERVICE_TYPE_LABELS, ServiceType } from '../../src/services/entryValidation';
+import { shareCsv, shareSummary } from '../../src/services/exportShare';
 
 const TYPE_BADGE_VARIANT: Record<ServiceType, 'info' | 'warning' | 'success' | 'default'> = {
   maintenance: 'info',
@@ -36,7 +40,11 @@ const TYPE_BADGE_VARIANT: Record<ServiceType, 'info' | 'warning' | 'success' | '
 export default function HistoryScreen() {
   const { vehicleId: vehicleIdParam } = useLocalSearchParams<{ vehicleId?: string }>();
   const { user } = useAuth();
+  // T3.4 / NFR-2: Firestore snapshot sync state for the offline banner.
+  const sync = useSyncState();
   const router = useRouter();
+  const { has } = useEntitlements(user?.uid ?? null); // READ-ONLY use (D3.1)
+  const canExport = has('history.export');
 
   // When opened without a vehicle (e.g. from the dashboard Garage card),
   // fall back to the user's first vehicle (multi-vehicle picker is T6.1).
@@ -110,15 +118,52 @@ export default function HistoryScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid, vehicleId]);
 
+  const [exporting, setExporting] = useState(false);
+
+  const runExport = useCallback(
+    async (kind: 'csv' | 'summary') => {
+      if (!canExport || entries.length === 0 || exporting) return;
+      setExporting(true);
+      try {
+        const name = `service-history-${vehicleId ?? 'vehicle'}`;
+        if (kind === 'csv') {
+          await shareCsv(entries, `${name}.csv`);
+        } else {
+          await shareSummary(entries, `${name}.html`);
+        }
+      } catch {
+        setError('Could not export. Try again.');
+      } finally {
+        setExporting(false);
+      }
+    },
+    [canExport, entries, exporting, vehicleId]
+  );
+
   if (!user) return null;
 
   return (
     <Screen padding="md" scrollable safeAreaBottom={false}>
+      {/* T3.4 / NFR-2: offline banner — cached snapshots and pending local
+          writes are surfaced to the user here. */}
+      <SyncBanner {...sync} />
       <View style={styles.header}>
         <Text style={styles.title}>Service history</Text>
         <Text style={styles.subtitle}>
           Newest first{entries.length > 0 ? ` · ${entries.length} shown` : ''}.
         </Text>
+        {vehicleId != null && (
+          <Button
+            variant="secondary"
+            size="sm"
+            style={styles.statsButton}
+            onPress={() =>
+              router.push(`/(vehicle)/stats?vehicleId=${encodeURIComponent(vehicleId)}`)
+            }
+          >
+            Stats
+          </Button>
+        )}
       </View>
 
       {error != null && (
@@ -166,6 +211,34 @@ export default function HistoryScreen() {
             />
           ))}
         </Card>
+      )}
+
+      {entries.length > 0 && (
+        <View style={styles.exportRow}>
+          <Button
+            variant="secondary"
+            size="sm"
+            style={styles.exportBtn}
+            disabled={!canExport || exporting}
+            onPress={() => void runExport('csv')}
+          >
+            Export CSV
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            style={styles.exportBtn}
+            disabled={!canExport || exporting}
+            onPress={() => void runExport('summary')}
+          >
+            Export Summary
+          </Button>
+        </View>
+      )}
+      {!canExport && entries.length > 0 && (
+        <Text style={styles.exportHint}>
+          Export is available on Advanced and Pro plans.
+        </Text>
       )}
 
       {error != null && (
@@ -223,4 +296,13 @@ const styles = StyleSheet.create({
     fontWeight: typography.fontWeight.semibold as '600',
   },
   loadMore: { alignSelf: 'center' },
+  exportRow: { flexDirection: 'row', justifyContent: 'center', gap: spacing.sm, marginBottom: spacing.xs },
+  exportBtn: { flex: 1 },
+  exportHint: {
+    color: colors.text.secondary,
+    fontSize: typography.fontSize.sm,
+    textAlign: 'center',
+    marginBottom: spacing.md,
+  },
+  statsButton: { alignSelf: 'flex-start', marginTop: spacing.xs },
 });
