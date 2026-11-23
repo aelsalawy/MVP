@@ -18,6 +18,7 @@ import { useRouter } from 'expo-router';
 import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { auth, db } from '../../lib/firebase';
 import { useAuth } from '../../src/hooks/useAuth';
+import { useEntitlements } from '../../src/hooks/useEntitlements';
 import { Screen } from '../../src/design/Screen';
 import { Card } from '../../src/design/Card';
 import { Button } from '../../src/design/Button';
@@ -60,6 +61,7 @@ function vinLast8(vin: string | null): string | null {
 export default function DashboardScreen() {
   const router = useRouter();
   const { user } = useAuth();
+  const { planTier } = useEntitlements(user?.uid);
   const draft = useVehicleDraft((s) => s.draft);
 
   const scheduleItems = useScheduleStore((s) => s.items);
@@ -177,6 +179,15 @@ export default function DashboardScreen() {
             <Text style={styles.title}>Dashboard</Text>
             <Text style={styles.email}>{user?.email ?? ''}</Text>
           </View>
+          {/* Tier-aware subscription entry (T7.1): Upgrade when free,
+              Manage subscription placeholder when pro. */}
+          <Button
+            variant="secondary"
+            size="sm"
+            onPress={() => router.push('/(tabs)/paywall')}
+          >
+            {planTier === 'pro' ? 'Manage subscription' : 'Upgrade'}
+          </Button>
           <Button variant="secondary" size="sm" onPress={handleLogout}>
             Sign out
           </Button>
