@@ -22,3 +22,11 @@ export { importIntervals, importIntervalsFn } from './intervals';
 
 // T7.2 (FR-2.2, D3.1): OCR parse callable with server-side metering gate.
 export { wrapOcrParse } from './ocrParse';
+
+// T4.3 (FR-3.4): push reminder pipeline — pure core + scheduled sweep + callable.
+export {
+  sendScheduledReminders,
+  sendReminder,
+  sendFcmToUid,
+} from './reminders';
+export { computeReminders } from './remindersCore';

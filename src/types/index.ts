@@ -17,6 +17,12 @@ export interface UserDoc {
   planTier: PlanTier;
   /** OCR meter (T7.2): total scans; incremented via server-side FieldValue.increment. */
   ocrMeterCount: number;
+  /** T4.3: device FCM push token (expo push token) for reminder delivery. */
+  fcmToken?: string;
+  /** T4.3: reminder opt-out. Default true; explicit false disables push reminders. */
+  remindersEnabled?: boolean;
+  /** T4.3: dedupe map `{vehicleId}:{item}` → epoch ms of last notification sent. */
+  reminderLastNotifiedAt?: Record<string, number>;
 }
 
 export interface VehicleDoc {
