@@ -5,7 +5,15 @@
     "scheme": "cartracker",
     "version": "1.0.0",
     "extra": {
-      "sentryDsn": "https://f9b6b71cccaaa7b97ef78edfb9c5c549@o4512483542695936.ingest.de.sentry.io/4512483626647632"
+      "sentryDsn": "https://f9b6b71cccaaa7b97ef78edfb9c5c549@o4512483542695936.ingest.de.sentry.io/4512483626647632",
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "8ccb68f2-d543-4628-9a60-11e3373cb5e3"
+      }
     },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,7 +31,11 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "package": "com.cartracker.app",
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -40,6 +52,7 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "owner": "aelsalawy"
   }
 }

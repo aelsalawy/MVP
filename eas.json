@@ -26,14 +26,10 @@
     "production": {
       "autoIncrement": true,
       "android": {
-        "buildType": "app-bundle",
-        "track": "internal"
+        "buildType": "app-bundle"
       },
       "ios": {
-        "buildConfiguration": "Release",
-        "submit": {
-          "useSubmissions": true
-        }
+        "buildConfiguration": "Release"
       }
     }
   },
