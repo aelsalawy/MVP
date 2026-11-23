@@ -63,7 +63,7 @@ export default function ManualDetailsScreen() {
   return (
     <Screen padding="md" scrollable safeAreaBottom={false}>
       <View style={styles.header}>
-        <Text style={styles.stepIndicator}>Step 2 of 2</Text>
+        <Text style={styles.stepIndicator}>Step 2 of 3</Text>
         <Text style={styles.title}>{make ?? 'Vehicle details'}</Text>
       </View>
 
