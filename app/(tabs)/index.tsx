@@ -34,6 +34,14 @@ export default function DashboardScreen() {
             >
               + Add service
             </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              style={styles.cardButton}
+              onPress={() => router.push('/(vehicle)/history')}
+            >
+              View history
+            </Button>
           </View>
         </Card>
 
