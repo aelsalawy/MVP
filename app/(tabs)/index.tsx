@@ -26,6 +26,14 @@ export default function DashboardScreen() {
           <View style={styles.cardInner}>
             <Text style={styles.cardTitle}>Garage</Text>
             <Text style={styles.cardBody}>Your vehicles will appear here.</Text>
+            <Button
+              variant="primary"
+              size="sm"
+              style={styles.cardButton}
+              onPress={() => router.push('/(vehicle)/service-entry')}
+            >
+              + Add service
+            </Button>
           </View>
         </Card>
 
@@ -66,5 +74,9 @@ const styles = StyleSheet.create({
   cardBody: {
     fontSize: 13,
     color: '#94a3b8',
+  },
+  cardButton: {
+    marginTop: 12,
+    alignSelf: 'flex-start',
   },
 });

@@ -10,6 +10,7 @@ export default function VehicleLayout() {
       <Stack.Screen name="manual/details" options={{ title: 'Vehicle Details' }} />
       <Stack.Screen name="odometer" options={{ title: 'Odometer' }} />
       <Stack.Screen name="ocr-review" options={{ title: 'Review Receipt' }} />
+      <Stack.Screen name="service-entry" options={{ title: 'Add Service' }} />
     </Stack>
   );
 }
